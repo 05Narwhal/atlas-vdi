@@ -11,7 +11,7 @@ Opens VirtualBox `.vdi` images as a `BlockSource`. The block map is validated ag
 
 ```toml
 [dependencies]
-atlas-vdi = "0.1"
+atlas-vdi = "26.0.1-a"
 ```
 
 Minimum supported Rust version: 1.88.
