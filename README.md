@@ -2,10 +2,39 @@
 
 [![crates.io](https://img.shields.io/crates/v/atlas-vdi.svg)](https://crates.io/crates/atlas-vdi) [![docs.rs](https://img.shields.io/docsrs/atlas-vdi)](https://docs.rs/atlas-vdi) [![CI](https://github.com/05Narwhal/atlas-vdi/actions/workflows/ci.yml/badge.svg)](https://github.com/05Narwhal/atlas-vdi/actions/workflows/ci.yml) ![License](https://img.shields.io/crates/l/atlas-vdi.svg)
 
-Opens VirtualBox `.vdi` images as a `BlockSource`. The block map is validated against the file and unallocated blocks read as zeros.
+**Open VirtualBox VDI disk images as a plain `BlockSource`.**
 
+`atlas-vdi` reads VirtualBox `.vdi` images and presents the disk inside as a `BlockSource`, ready for `atlas-partition` and the filesystem readers.
+
+## Features
+
+- **Dynamic and fixed (static)** images.
+- The block map is validated against the file, and unallocated blocks read as zeros.
+- Both the VirtualBox 1.1 header (400 bytes) and the 384-byte header that `qemu-img` writes are accepted.
 - Snapshot and differencing images are reported as unsupported.
-- No `unsafe`. Every length, offset and count read from the disk is checked; damage is an error, not a panic.
+
+## Quick start
+
+```rust,no_run
+use std::path::Path;
+
+use atlas_fs_core::io::block::BlockSource;
+
+let disk = atlas_vdi::open(Path::new("disk.vdi"))?;
+println!("{} bytes of disk", disk.len());
+```
+
+## Sources
+
+Written from the VirtualBox source (`VDICore.h`) and cross-checked against the libyal notes on the VDI format. All integers are little-endian.
+
+## Safety and robustness
+
+- **No `unsafe`.** The crate is `#![forbid(unsafe_code)]`.
+- **On-disk bytes are hostile.** Every length, offset and count read from a disk is validated before use. Damage is returned as an error, never a panic, an unchecked index or an unbounded loop.
+- **Lints enforce it.** Clippy's `indexing_slicing`, `arithmetic_side_effects`, `unwrap_used`, `expect_used` and `panic` lints are on for the library code.
+- **Read-only.** Nothing in this crate writes to a disk or image.
+- **Fuzzed.** A `cargo-fuzz` target in `fuzz/` runs the parser on arbitrary bytes.
 
 ## Install
 
@@ -14,7 +43,9 @@ Opens VirtualBox `.vdi` images as a `BlockSource`. The block map is validated ag
 atlas-vdi = "26.0.1-a"
 ```
 
-Minimum supported Rust version: 1.88.
+Versions follow `26.MAJOR.MINOR-STAGE`: the year, the major and minor version, and a stage letter (`a` alpha, `b` beta, `s` stable). Cargo treats a stage suffix as a pre-release, so name the version exactly as above.
+
+Minimum supported Rust version: 1.88 (edition 2024).
 
 ## Licence
 
