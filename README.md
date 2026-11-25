@@ -1,6 +1,6 @@
 # atlas-vdi
 
-<!-- badges -->[![crates.io](https://img.shields.io/crates/v/atlas-vdi.svg)](https://crates.io/crates/atlas-vdi) [![docs.rs](https://img.shields.io/docsrs/atlas-vdi)](https://docs.rs/atlas-vdi) [![CI](https://github.com/05Narwhal/atlas-vdi/actions/workflows/ci.yml/badge.svg)](https://github.com/05Narwhal/atlas-vdi/actions/workflows/ci.yml) ![License](https://img.shields.io/crates/l/atlas-vdi.svg)
+[![crates.io](https://img.shields.io/crates/v/atlas-vdi.svg)](https://crates.io/crates/atlas-vdi) [![docs.rs](https://img.shields.io/docsrs/atlas-vdi)](https://docs.rs/atlas-vdi) [![CI](https://github.com/05Narwhal/atlas-vdi/actions/workflows/ci.yml/badge.svg)](https://github.com/05Narwhal/atlas-vdi/actions/workflows/ci.yml) ![License](https://img.shields.io/crates/l/atlas-vdi.svg)
 
 Opens VirtualBox `.vdi` images as a `BlockSource`. The block map is validated against the file and unallocated blocks read as zeros.
 
